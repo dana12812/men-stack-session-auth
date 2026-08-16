@@ -45,19 +45,22 @@ router.post('/sign-in', async (req, res) => {
     return res.send('Login failed. Please try again.');
   }
 
-  req.session.user = {
-    username: userInDatabase.username,
-    _id: userInDatabase._id,
-  };
+req.session.user = {
+  username: userInDatabase.username,
+};
 
-  res.redirect('/');
+req.session.save(() => {
+  res.redirect("/");
+});
+
 });
 
 // PRIVATE ROUTES
 
 router.get('/sign-out', (req, res) => {
-  req.session.destroy();
-  res.redirect('/');
+  req.session.destroy(() => {
+    res.redirect('/');
+  });
 });
 
 module.exports = router;
